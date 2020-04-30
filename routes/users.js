@@ -50,9 +50,7 @@ router.post('/login', function (req, res, next) {
 
 //个人信息修改
 router.post('/update', (req, res, next) => {
-  console.log(req.body);
   update(req.body,req.user.id).then(result=>{
-    console.log(result);
     if(result.affectedRows){
       res.json(new SuccessModel('修改成功'))
     }else{

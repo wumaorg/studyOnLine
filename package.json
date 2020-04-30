@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "dev": "cross-env NODE_ENV=dev nodemon ./bin/www.js",
-    "prd": "cross-env NODE_ENV=production nodemon ./bin/www.js"
+    "prd": "cross-env NODE_ENV=production nodemon ./bin/www.js",
+    "pm2dev": "cross-env NODE_ENV=dev pm2 ./bin/www.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
