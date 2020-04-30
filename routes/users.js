@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-const { login, register } = require('../controller/user')
+const { login, register,update } = require('../controller/user')
 const { SuccessModel, ErrorModel } = require('../model/resModel.js')
 const jwt = require('jsonwebtoken')
 
@@ -48,8 +48,21 @@ router.post('/login', function (req, res, next) {
   })
 })
 
+//个人信息修改
+router.post('/update', (req, res, next) => {
+  console.log(req.body);
+  update(req.body,req.user.id).then(result=>{
+    console.log(result);
+    if(result.affectedRows){
+      res.json(new SuccessModel('修改成功'))
+    }else{
+      res.json(new ErrorModel(res))
+    }
+  })
+})
+
 router.get('/login-test', (req, res, next) => {
-  console.log(req.user,req.id);
+  console.log(req.user, req.id)
   if (req.user.auth) {
     res.json(new SuccessModel('登录成功'))
     return
@@ -59,6 +72,5 @@ router.get('/login-test', (req, res, next) => {
     msg: '没登录'
   })
 })
-
 
 module.exports = router

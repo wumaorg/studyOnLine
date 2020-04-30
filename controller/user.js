@@ -2,36 +2,35 @@ const { exec, escape } = require('../db/mysql.js')
 const { genPassword } = require('../util/cryp.js')
 
 // 检查是否有重复项
-const checkExist = (name,value)=>{
-    const sql = `select username from users where ${name}=${value}`
-    return exec(sql).then(rows => {
-        return rows[0] || {}
-      })
+const checkExist = (name, value) => {
+  const sql = `select username from users where ${name}=${value}`
+  return exec(sql).then(rows => {
+    return rows[0] || {}
+  })
 }
 
 const register = (username, password, name) => {
-    username = escape(username)
-    name = escape(name)
-    //生成加密密码
-    password = genPassword(password)
-    password = escape(password)
-    return checkExist('username',username).then(res=>{
-        if(res.username){
-            const noPeople = new Promise(((resolve,reject)=>{
-                resolve(0)
-            }))
-            return noPeople.then(res=>{
-                return res
-            })
-        }else{
-            const sql = `insert into users (username,password,name) values(${username},${password},${name})`
-            return exec(sql).then(rows => {
-                // console.log(rows,'111111111111111');
-                return rows[0] || {}
-              })
-            
-        }
-    })
+  username = escape(username)
+  name = escape(name)
+  //生成加密密码
+  password = genPassword(password)
+  password = escape(password)
+  return checkExist('username', username).then(res => {
+    if (res.username) {
+      const noPeople = new Promise((resolve, reject) => {
+        resolve(0)
+      })
+      return noPeople.then(res => {
+        return res
+      })
+    } else {
+      const sql = `insert into users (username,password,name) values(${username},${password},${name})`
+      return exec(sql).then(rows => {
+        // console.log(rows,'111111111111111');
+        return rows[0] || {}
+      })
+    }
+  })
 }
 
 const login = (username, password) => {
@@ -48,4 +47,18 @@ const login = (username, password) => {
     return rows[0] || {}
   })
 }
-module.exports = { login,register }
+
+const update = (data, id) => {
+  let attrStr = ''
+  for (const key in data) {
+    console.log(key)
+    attrStr += key + '="' + data[key] + '",'
+  }
+  console.log(attrStr)
+  const sql = `update users set ${attrStr}useless=0 where id=${id}`
+  console.log(sql)
+  return exec(sql).then(rows => {
+    return rows || {}
+  })
+}
+module.exports = { login, register, update }
