@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "dev": "cross-env NODE_ENV=dev nodemon ./bin/www.js",
-    "prd": "cross-env NODE_ENV=production nodemon ./bin/www.js",
-    "pm2dev": "cross-env NODE_ENV=dev pm2 ./bin/www.js"
+    "dev": "cross-env NODE_ENV=dev nodemon ./bin/www",
+    "dev2": "cross-env NODE_ENV=dev pm2 start ./bin/www",
+    "prd": "cross-env NODE_ENV=production nodemon ./bin/www",
+    "pm2dev": "cross-env NODE_ENV=dev pm2 start pm2.conf.json"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
