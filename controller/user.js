@@ -26,7 +26,6 @@ const register = (username, password, name) => {
     } else {
       const sql = `insert into users (username,password,name) values(${username},${password},${name})`
       return exec(sql).then(rows => {
-        // console.log(rows,'111111111111111');
         return rows[0] || {}
       })
     }

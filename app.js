@@ -5,7 +5,8 @@ var path = require('path')
 var logger = require('morgan')
 
 var usersRouter = require('./routes/users')
-var infoRouter = require('./routes/info')
+var roomRouter = require('./routes/room')
+// var infoRouter = require('./routes/info')
 
 const expressJwt = require('express-jwt')
 
@@ -48,7 +49,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api/user', usersRouter)
-app.use('/api/info', infoRouter)
+app.use('/api/room', roomRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

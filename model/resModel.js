@@ -16,14 +16,14 @@ class BaseModel {
 class SuccessModel extends BaseModel {
     constructor(data,message){
         super(data,message)
-        this.error_code = 0
+        this.error_code = 1
     }
 }
 
 class ErrorModel extends BaseModel {
     constructor(data,message){
         super(data,message)
-        this.error_code = -1
+        this.error_code = 0
     }
 }
 module.exports = {
