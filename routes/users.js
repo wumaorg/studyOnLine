@@ -1,8 +1,11 @@
 var express = require('express')
 var router = express.Router()
-const { login, register,update } = require('../controller/user')
+const fs = require('fs')
+const path = require('path')
+const { login, register, update } = require('../controller/user')
 const { SuccessModel, ErrorModel } = require('../model/resModel.js')
 const jwt = require('jsonwebtoken')
+const multer = require('multer')
 
 //注册接口
 router.post('/register', (req, res, next) => {
@@ -50,13 +53,33 @@ router.post('/login', function (req, res, next) {
 
 //个人信息修改
 router.post('/update', (req, res, next) => {
-  update(req.body,req.user.id).then(result=>{
-    if(result.affectedRows){
+  update(req.body, req.user.id).then(result => {
+    if (result.affectedRows) {
       res.json(new SuccessModel('修改成功'))
-    }else{
+    } else {
       res.json(new ErrorModel(res))
     }
   })
+})
+
+//头像上传
+const upload = multer({ dest: path.join(__dirname, '../upload/') })
+router.post('/upload', upload.single('imageFile'), function (req, res, next) {
+  // req.file 是 `avatar` 文件的信息
+  // req.body 将具有文本域数据，如果存在的话
+  console.log(req.file.path)
+
+  fs.rename(req.file.path, path.join(__dirname,'../upload/') + req.file.originalname, function (err) {
+    if (err) {
+      throw err
+    }
+    console.log('上传成功!')
+  })
+  // res.writeHead(200, {
+  //   'Access-Control-Allow-Origin': '*'
+  // })
+  // res.end(JSON.stringify(req.file) + JSON.stringify(req.body))
+  res.json(new SuccessModel('上传成功'))
 })
 
 router.get('/login-test', (req, res, next) => {
