@@ -67,19 +67,24 @@ const upload = multer({ dest: path.join(__dirname, '../upload/') })
 router.post('/upload', upload.single('imageFile'), function (req, res, next) {
   // req.file 是 `avatar` 文件的信息
   // req.body 将具有文本域数据，如果存在的话
-  console.log(req.file.path)
+  console.log(path.join(__dirname, '../upload/') + req.file.originalname)
 
-  fs.rename(req.file.path, path.join(__dirname,'../upload/') + req.file.originalname, function (err) {
-    if (err) {
-      throw err
+  fs.rename(
+    req.file.path,
+    path.join(__dirname, '../upload/') + req.file.originalname,
+    function (err) {
+      if (err) {
+        throw err
+      }
+      console.log('上传成功!')
     }
-    console.log('上传成功!')
-  })
-  // res.writeHead(200, {
-  //   'Access-Control-Allow-Origin': '*'
-  // })
-  // res.end(JSON.stringify(req.file) + JSON.stringify(req.body))
-  res.json(new SuccessModel('上传成功'))
+  )
+  res.json(
+    new SuccessModel({
+      message: '上传成功',
+      url: path.join(__dirname, '../upload/') + req.file.originalname
+    })
+  )
 })
 
 router.get('/login-test', (req, res, next) => {
